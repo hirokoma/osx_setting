@@ -1,0 +1,59 @@
+# 最初のセットアップ
+
+# sudo chown -R `whoami` /usr/local
+# ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# brew update && brew upgrade
+# brew install gcc coreutils
+# brew install libtool readline automake boost
+# brew install wget git colordiff lv nkf
+
+# brew install pyenv
+# pyenv install -l
+# pyenv install 2.7.12
+# pyenv global 2.7.12
+# pip install --upgrade pip
+# pip install numpy scipy gensim scikit-learn
+# pip install gunicorn
+
+# brew uninstall node
+# brew install nodebrew
+# nodebrew install-binary stable
+# nodebrew list
+# nodebrew use v6.3.1
+# npm update -g
+
+# sudo chown -R `whoami` /Library/Ruby/Gems
+# gem install sass
+# npm install -g yo grunt-cli bower to update
+# npm install -g node-inspector to update
+# npm install -g generator-angular-fullstack to update
+
+# brew install heroku-toolbelt
+
+# エイリアス
+alias rm='rm -i'
+alias ud='cd ../'
+
+# lsに色を付ける
+if [ "$(uname)" = 'Darwin' ]; then
+  export LSCOLORS=exfxcxdxcxegedabagacad
+  alias ls='ls -G'
+else
+  eval `dircolors ~/.colorrc`
+  alias ls='ls --color=auto'
+fi
+
+# brew経由でのpyenvインストール時, ローカルpyenvを使用するか
+# /usr/local/var/pyenvを使用するか選択可能. 後者の場合, 以下
+# をbash_profileに追記
+export PYENV_ROOT=/usr/local/var/pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
+# brew経由でpyenvインストール後, pyenv配下の*-configファイル
+# のファイル名に関する警告が出るのを防ぐため, brew実行時のPATH
+# を変更
+alias brew="env PATH=${PATH/\/usr\/local\/var\/pyenv\/shims:/} brew"
+
+export NODEBREW_ROOT=/usr/local/var/nodebrew
+export PATH=$NODEBREW_ROOT/current/bin:$PATH
+dir=/usr/local/var/nodebrew/src; [ ! -e $dir ] && mkdir -p $dir
