@@ -1,38 +1,7 @@
-# 最初のセットアップ
-
-# sudo chown -R `whoami` /usr/local
-# ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-# brew update && brew upgrade
-# brew install gcc coreutils
-# brew install libtool readline automake boost
-# brew install wget git colordiff lv nkf
-
-# brew install pyenv
-# pyenv install -l
-# pyenv install 2.7.12
-# pyenv global 2.7.12
-# pip install --upgrade pip
-# pip install numpy scipy gensim scikit-learn
-# pip install gunicorn
-
-# brew uninstall node
-# brew install nodebrew
-# nodebrew install-binary stable
-# nodebrew list
-# nodebrew use v6.3.1
-# npm update -g
-
-# sudo chown -R `whoami` /Library/Ruby/Gems
-# gem install sass
-# npm install -g yo grunt-cli bower to update
-# npm install -g node-inspector to update
-# npm install -g generator-angular-fullstack to update
-
-# brew install heroku-toolbelt
-
 # エイリアス
 alias rm='rm -i'
 alias ud='cd ../'
+alias mecab="mecab -d /usr/local/lib/mecab/dic/mecab-ipadic-neologd"
 
 # lsに色を付ける
 if [ "$(uname)" = 'Darwin' ]; then
@@ -42,6 +11,12 @@ else
   eval `dircolors ~/.colorrc`
   alias ls='ls --color=auto'
 fi
+
+# brew経由でのrbenvインストール時, ローカルrbenvを使用するか
+# /usr/local/var/rbenvを使用するか選択可能. 後者の場合, 以下
+# をbash_profileに追記
+export RBENV_ROOT=/usr/local/var/rbenv
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 # brew経由でのpyenvインストール時, ローカルpyenvを使用するか
 # /usr/local/var/pyenvを使用するか選択可能. 後者の場合, 以下
@@ -54,6 +29,22 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 # を変更
 alias brew="env PATH=${PATH/\/usr\/local\/var\/pyenv\/shims:/} brew"
 
+# brew経由でnodebrewをインストールする際, インストールディレク
+# トリを指定する必要がある. また, ディレクトリが存在しない場合
+# インストールに失敗するため, 予め作成しておく必要がある.
 export NODEBREW_ROOT=/usr/local/var/nodebrew
 export PATH=$NODEBREW_ROOT/current/bin:$PATH
 dir=/usr/local/var/nodebrew/src; [ ! -e $dir ] && mkdir -p $dir
+
+# Chainer/CUDA用の環境変数
+export PATH=/usr/local/cuda/bin:$PATH
+export CPATH=/usr/local/cuda/include:$CPATH
+export LD_LIBRARY_PATH=/usr/local/cuda/lib:$LD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH=/usr/local/cuda/lib:$DYLD_LIBRARY_PATH
+
+# 起動のたびにパッケージを更新
+brew update && brew upgrade
+pip install --upgrade pip
+npm install -g npm
+
+
